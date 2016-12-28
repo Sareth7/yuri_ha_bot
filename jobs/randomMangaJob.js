@@ -1,11 +1,11 @@
 const CronJob = require('cron').CronJob;
 const scrap = require("../libs/scrap");
-const buttons = require("../libs/inlinebuttons");
+const buttons = require("../libs/buttons");
 const subscribers = require("../libs/subscribers");
 
 
 module.exports = function() {
-	const job = new CronJob("01 0,10,20,30,40,50 * * * *", () => {
+	const job = new CronJob("01 0,13,23,33,43,53 * * * *", () => {
 		subscribers.getSubscribe( "randomManga" )
 			.then(data => {
 				const { users } = data;

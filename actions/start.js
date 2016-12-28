@@ -1,4 +1,4 @@
-const buttons = require("../libs/inlinebuttons");
+const buttons = require("../libs/buttons");
 
 module.exports = function( msg ) {
 	const { chat : { id : chatId, first_name } } = msg;

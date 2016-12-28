@@ -30,7 +30,7 @@ function scrapNewMangaFromReadManga(count = 10){
 			response.push(createManga(text, href));
 		})
 
-		return response;
+		return { nextManga: response };
 	})
 }
 

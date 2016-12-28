@@ -14,6 +14,7 @@ class Bot {
 		mongoose.Promise = global.Promise;
 
 		this.bot.on("message", this.router.bind(this));
+		
 		this.startJobs();
 	}
 

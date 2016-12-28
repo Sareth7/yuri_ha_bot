@@ -1,23 +1,21 @@
 const CronJob = require('cron').CronJob;
 const scrap = require("../libs/scrap");
-const buttons = require("../libs/inlinebuttons");
+const buttons = require("../libs/buttons");
 const subscribers = require("../libs/subscribers");
+const generateMangaResponse = require("../libs/generateMangaResponse");
 
 module.exports = function() {
-	const job = new CronJob("01 25,55 * * * *", () => {
+	const job = new CronJob("01 0,5,10,15,20,25,30,35,40,45,50,55 * * * *", () => {
 		subscribers.getSubscribe( "newManga" )
 			.then(data => {
 				const { users } = data;
-				scrap.scrapNewMangaFromReadManga(11)
+				const site = "readmanga.me";
+				generateMangaResponse.getNewMangaJobAction(site)
 					.then(manga => {
-						const text =  "<strong>Последние поступления с readmanga.me</strong>";
-						const mangaListButtons = buttons.getInlineKeyBoard(...manga);
-						const options = Object.assign({}, {
-							parse_mode: "HTML",
-							disable_web_page_preview: true
-						}, mangaListButtons);
-
-						users.forEach(user => {this.bot.sendMessage(user, text, options)});
+						if(manga) {
+							const { title, options } = generateMangaResponse.getNewMangaListResponse(manga, site);
+							users.forEach(user => {this.bot.sendMessage(user, title, options)});
+						}
 					})
 			})
 	})

@@ -1,3 +1,5 @@
+const keyboards = require("./keyboards");
+
 function getInlineKeyBoard(...buttons) {
 	if(buttons.length) {
 		const inline_keyboard = buttons.map(createInlineButton);
@@ -17,16 +19,12 @@ function createInlineButton(data) {
 	}]
 }
 
-function getKeyBoard( msg = {} ) {
+function getKeyBoard(type = "main") {
 	return {
-		reply_markup: JSON.stringify({
-			keyboard: [
-				["Новая манга", "Случайная манга"],
-				["Подписка на новую мангу", "Подписка на случайную мангу"],
-				["Отписаться от рассылки н.м", "Отписаться от рассылки сл.м"]
-			],
+		reply_markup: type !== "close" ? JSON.stringify({
+			keyboard: keyboards[type],
 			resize_keyboard: true
-		})
+		}) : { remove_keyboard : true}
 	}
 }
 

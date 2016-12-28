@@ -1,20 +1,21 @@
 const scrap = require("../libs/scrap");
-const buttons = require("../libs/inlinebuttons");
+const buttons = require("../libs/buttons");
 const destructMsg = require("../libs/destructMsg");
+
+const generateMangaResponse = require("../libs/generateMangaResponse");
 
 function newManga( msg ) {
 	const chatId = destructMsg.getChatId(msg);
-
-	scrap.scrapNewMangaFromReadManga(25)
-		.then( data => {
-			const title =  "<strong>Последние поступления с readmanga.me</strong>";
-			const mangaList = buttons.getInlineKeyBoard(...data);
-			const options = Object.assign({}, {
-				parse_mode: "HTML",
-				disable_web_page_preview: true
-			}, mangaList);
-
-			this.bot.sendMessage(chatId, title, options);
+	const site = "readmanga.me";
+	
+	generateMangaResponse.getNewMangaUserAction(site)
+		.then(manga => {
+			if(manga) {
+				const { title, options } = generateMangaResponse.getNewMangaListResponse(manga, site);
+				this.bot.sendMessage(chatId, title, options);
+			}else{
+				this.bot.sendMessage(chatId, "Новых поступлений пока нет");
+			}
 		})
 }
 

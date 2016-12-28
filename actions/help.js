@@ -1,7 +1,10 @@
 module.exports = function( msg ) {
 	const { chat : { id : chatId } } = msg;
-	const text = `<strong>Список команд</strong>
+	const text = `
+	<strong>Список команд</strong>
 	<code>/help</code> - список всех команд
+	<code>/hide_menu</code> - спрятать меню
+	<code>/show_menu</code> - открыть меню
 	<code>/new_manga</code> - получить список новых глав манги с readmanga.me
 	<code>/random_manga</code> - получить случайную мангу
 	<code>/sub_new_manga</code> - подписаться на рассылку новых поступлений
