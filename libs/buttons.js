@@ -23,7 +23,8 @@ function getKeyBoard(type = "main") {
 	return {
 		reply_markup: type !== "close" ? JSON.stringify({
 			keyboard: keyboards[type],
-			resize_keyboard: true
+			resize_keyboard: true,
+			one_time_keyboard: true
 		}) : { remove_keyboard : true}
 	}
 }

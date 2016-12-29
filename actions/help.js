@@ -1,5 +1,8 @@
+var buttons = require("../libs/buttons");
+
 module.exports = function( msg ) {
 	const { chat : { id : chatId } } = msg;
+	const keyboard = buttons.getKeyBoard();
 	const text = `
 	<strong>Список команд</strong>
 	<code>/help</code> - список всех команд
@@ -12,5 +15,5 @@ module.exports = function( msg ) {
 	<code>/unsub_new_manga</code> - отписаться от рассылки новых поступлений
 	<code>/unsub_random_manga</code> - отписаться  от рассылки случайной манги`;
 	
-	this.bot.sendMessage(chatId, text, { parse_mode: "HTML" });
+	this.bot.sendMessage(chatId, text, Object.assign({ parse_mode: "HTML" }, keyboard));
 }

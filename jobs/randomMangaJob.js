@@ -11,6 +11,7 @@ module.exports = function() {
 				const { users } = data;
 				scrap.scrapRandomMangaFromReadManga()
 					.then(manga => {
+						console.log("[randomManga]",manga);
 						const title = `<strong>${ manga.name }</strong>\n<em>${ manga.alternativeName }</em>`;
 						const desc = `\n<pre>${ manga.desc }</pre>`;
 						const linkButton = buttons.getInlineKeyBoard({ text: "Читать", url: manga.url });

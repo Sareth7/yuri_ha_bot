@@ -12,7 +12,7 @@ module.exports = function() {
 				const site = "readmanga.me";
 				generateMangaResponse.getNewMangaJobAction(site)
 					.then(manga => {
-						if(manga) {
+						if(manga && manga.length) {
 							const { title, options } = generateMangaResponse.getNewMangaListResponse(manga, site);
 							users.forEach(user => {this.bot.sendMessage(user, title, options)});
 						}

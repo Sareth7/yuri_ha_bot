@@ -1,8 +1,11 @@
 {
   "name": "yuri_ha_bot",
-  "version": "0.0.3",
+  "version": "0.7.3",
   "description": "Ha Yuri Bot",
-  "main": "app.js",
+  "main": "index.js",
+  "engines": {
+    "node": "7.2.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
