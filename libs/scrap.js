@@ -6,7 +6,6 @@ function scrapManga(url, callback){
 	return new Promise(function(resolve, reject) {
 		request(url, function(error, response, body) {
 			if(!error) {
-				//fs.writeFile("anon.html", body, (err) => console.log(err))
 				const $ = cheerio.load(body);
 				resolve(callback( $, response ))
 			}else{
@@ -30,7 +29,7 @@ function scrapNewMangaFromReadManga(count = 10){
 			response.push(createManga(text, href));
 		})
 
-		return { nextManga: response };
+		return response;
 	})
 }
 

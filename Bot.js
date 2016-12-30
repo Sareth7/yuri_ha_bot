@@ -1,6 +1,7 @@
 const TelegramBot = require("node-telegram-bot-api");
 const mongoose = require("mongoose");
 const getJobs = require("./jobs");
+const seeds = require("./models/seeders/initialData");
 
 class Bot {
 	constructor( { token = "", router = ( msg ) => {}, options = { polling: true } }  = {} )  {
@@ -12,9 +13,7 @@ class Bot {
 	start() {
 		mongoose.connect(process.env.DB_TOKEN);
 		mongoose.Promise = global.Promise;
-
 		this.bot.on("message", this.router.bind(this));
-		
 		this.startJobs();
 	}
 

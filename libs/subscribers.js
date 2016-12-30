@@ -1,12 +1,18 @@
 const Subscribe = require("../models/Subscribe");
 
-module.exports.getUser = function( action, user ) {
-	let promise = Subscribe
-		.findOne({ 
-			action,
-			users: { $in : [ user ] } 
-		})
-		.limit(1)
+module.exports.checkUserSub = function( action, user, isSub = false ) {
+	let promise = new Promise((resolve, reject) => {
+		Subscribe
+			.findOne({ action, users: { $in : [ user ] } })
+			.limit(1)
+			.then(data => {
+				if((!data && !isSub) || (data && isSub)) {
+					resolve(data)
+				}else {
+					reject(data)
+				}
+			})
+	})
 
 	return promise;
 }

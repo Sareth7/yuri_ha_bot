@@ -5,11 +5,11 @@ const destructMsg = require("../libs/destructMsg");
 const generateMangaResponse = require("../libs/generateMangaResponse");
 
 function newManga( msg ) {
-	const chatId = destructMsg.getChatId(msg);
 	const site = "readmanga.me";
+	const chatId = destructMsg.getChatId(msg);
 	const keyboard = buttons.getKeyBoard();
 	
-	generateMangaResponse.getNewMangaUserAction(site)
+	generateMangaResponse.getNewMangaUserAction(site, 11)
 		.then(manga => {
 			if(manga) {
 				const { title, options } = generateMangaResponse.getNewMangaListResponse(manga, site);
@@ -28,14 +28,12 @@ function randomManga( msg ) {
 	scrap.scrapRandomMangaFromReadManga()
 		.then( manga => {
 			console.log("[randomManga]",manga);
-			const title = `<strong>${ manga.name }</strong>\n<em>${ manga.alternativeName }</em>`;
-			const desc = `\n<pre>${ manga.desc }</pre>`;
-			const linkButton = buttons.getInlineKeyBoard({ text: "Читать", url: manga.url });
-			if( manga.img ){
-				this.bot.sendPhoto( chatId, manga.img, linkButton);
-				this.bot.sendMessage( chatId, title + desc, Object.assign({ parse_mode: "HTML" }, keyboard));
+			const { message, linkButton, img } = generateMangaResponse.getRandomMangaResponse(manga);
+			if( img ){
+				this.bot.sendPhoto( chatId, img, linkButton);
+				this.bot.sendMessage( chatId, message, Object.assign({ parse_mode: "HTML" }, keyboard));
 			}else{
-				this.bot.sendMessage( chatId, title + desc, Object.assign({}, { parse_mode: "HTML" }, linkButton));
+				this.bot.sendMessage( chatId, message, Object.assign({}, { parse_mode: "HTML" }, linkButton));
 			}
 		})
 }
