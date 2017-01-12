@@ -25,7 +25,7 @@ function getUnionData( previous, next ) {
 }
 
 function normilizeData( data ) {
-	return data.toArray().map(item => item.toJS());
+	return data.sortBy(item => item.text).toArray().map(item => item.toJS());
 }
 
 module.exports = function(previous, next) {

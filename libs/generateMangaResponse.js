@@ -3,8 +3,9 @@ const checkMangaList = require("./checkMangaList");
 const scrap = require("./scrap");
 const buttons = require("./buttons");
 
-module.exports.getNewMangaListResponse = function( data, site ) {
-	const title =  `<strong>\u{1F4E2}Последние поступления с ${site}</strong>`;
+module.exports.getNewMangaListResponse = function( data, site, mangaName = "" ) {
+	const titleText =  mangaName ? `${mangaName} новые главы!` : `Последние поступления с ${site}`;
+	const title = `<strong>\u{1F4E2}${titleText}</strong>`
 	const mangaList = buttons.getInlineKeyBoard(...data);
 	const options = Object.assign({}, {
 				parse_mode: "HTML",
@@ -23,15 +24,15 @@ module.exports.getRandomMangaResponse = function( manga, site = "readmanga.me") 
 	return { message, linkButton, img };
 }
 
-module.exports.getNewMangaJobAction = function( site, count ) {
+module.exports.getNewMangaJobAction = function( site, count, mangaName = "", chapters = false ) {
 	let promise = new Promise((resolve, reject) => {
-		Promise.all([MangaAPI.getManga(site), scrap.scrapNewMangaFromReadManga(count)])
+		Promise.all([MangaAPI.getManga(site, mangaName, chapters), scrap.scrapNewMangaFromReadManga(count, mangaName)])
 			.then(([mangaFromDB, nextManga]) => {
 				const { last_titles: previousManga } = mangaFromDB.toJSON();
 				const mangaList = checkMangaList(previousManga, nextManga);
 				if(mangaList) {
 					const { newData, unionData } = mangaList;
-					MangaAPI.updateLastTitles(site, unionData);
+					MangaAPI.updateLastTitles(site, unionData, mangaName, chapters);
 					resolve(newData);
 				}else{
 					resolve(mangaList);

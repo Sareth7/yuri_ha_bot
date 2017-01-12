@@ -1,4 +1,5 @@
 const Subscribe = require("../models/Subscribe");
+const Chapter = require("../models/Chapter");
 
 module.exports.checkUserSub = function( action, user, isSub = false ) {
 	let promise = new Promise((resolve, reject) => {
@@ -15,6 +16,23 @@ module.exports.checkUserSub = function( action, user, isSub = false ) {
 	})
 
 	return promise;
+}
+
+module.exports.checkAction = function(action) {
+	return new Promise((resolve, reject) => {
+		Subscribe
+			.findOne({action})
+			.select("action")
+			.limit(1)
+			.then(data => {
+				if(!data){
+					Subscribe.create({ action }).then(data => resolve(data));
+					Chapter.create({ manga: action }).then(data => console.log(data));
+				}else{
+					resolve(data)
+				}
+			})
+	})
 }
 
 module.exports.getSubscribe = function( action ) {

@@ -15,20 +15,24 @@ function scrapManga(url, callback){
 	})
 }
 
-function scrapNewMangaFromReadManga(count = 10){
-	const url = "http://readmanga.me";
-	return scrapManga(url, ( $ ) => {
+function scrapNewMangaFromReadManga(count = 10, mangaName = false){
+	const options = { 
+		url: "http://readmanga.me", 
+		chapters: "table.newChapters tbody tr", 
+		baseUrl: "http://readmanga.me" };
+	if(mangaName) {
+		options.url = `${options.baseUrl}/${mangaName}`;
+		options.chapters = "table.table.table-hover > tr";
+	}
+	return scrapManga(options.url, ( $ ) => {
 		const response = [];
-		const chapters = $("table.newChapters tbody tr").slice(0, count);
-		
+		const chapters = $(options.chapters).slice(0, count);
 		chapters.each((index, el) => {
 			let link = $(el).find("td a");
-			let href = url + link.attr("href");
-			let text = link.text();
-
+			let href = options.baseUrl + link.attr("href");
+			let text = link.text().trim();
 			response.push(createManga(text, href));
 		})
-
 		return response;
 	})
 }

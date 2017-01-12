@@ -8,7 +8,8 @@ module.exports.subscribe = function( msg ) {
 	let text = `${first_name}, подожди немного, пробую подписаться на событие <code>[${action}]</code>...`;
 	this.bot.sendMessage(chatId, text, { parse_mode: "HTML" });
 
-	subscribers.checkUserSub(action, chatId, false)
+	subscribers.checkAction(action)
+		.then(data => subscribers.checkUserSub(action, chatId, false))
 		.then(data => subscribers.subscribeToAction(action, chatId))
 		.then(data => {
 			let text = `${first_name}, ты успешно подписался на событие <code>[${action}]</code>`;

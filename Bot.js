@@ -4,26 +4,27 @@ const getJobs = require("./jobs");
 const seeds = require("./models/seeders/initialData");
 
 class Bot {
-	constructor( { token = "", router = ( msg ) => {}, options = { polling: true } }  = {} )  {
+	constructor( { token = "", options = { polling: true }, jobs, router }  = {} )  {
 		this.bot = new TelegramBot( token, options );
-		this.router = router;
-		this.getJobs();
+		if(router) this.router = router;
+		if(jobs) this.getJobs(jobs);
 	}
 
 	start() {
 		mongoose.connect(process.env.DB_TOKEN);
 		mongoose.Promise = global.Promise;
-		this.bot.on("message", this.router.bind(this));
-		this.startJobs();
+		if(this.router) this.bot.on("message", this.router.bind(this));
+		if(this.jobs) this.startJobs();
 	}
 
-	getJobs() {
-		this.jobs = getJobs(this);
+	getJobs(jobs) {
+		this.jobs = jobs(this);
 	}
 
 	startJobs() {
 		this.jobs.randomManga.start();
 		this.jobs.newManga.start();
+		this.jobs.newChapters.start();
 	}
 }
 

@@ -1,4 +1,5 @@
 const actions = require("../actions");
+const ripper = require("./ripper");
 
 module.exports = function( msg ) {
 	switch( msg.text ) {
@@ -46,7 +47,12 @@ module.exports = function( msg ) {
 			actions.switchKeyboard.call(this, msg, "main");
 		break;
 		default:
-			actions.default.call(this, msg);
+			const link = ripper.isLink(msg.text)
+			if(link){
+				actions.subscribeActions.subscribe.call(this, Object.assign({}, msg, { action: link }))
+			}else{
+				actions.default.call(this, msg);
+			}	
 		break;
 	}
 }
