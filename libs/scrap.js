@@ -25,12 +25,13 @@ function scrapNewMangaFromReadManga(count = 10, mangaName = false){
 		options.chapters = "table.table.table-hover > tr";
 	}
 	return scrapManga(options.url, ( $ ) => {
+		const regExp = /([А-яA-z0-9\-]+)/g;
 		const response = [];
 		const chapters = $(options.chapters).slice(0, count);
 		chapters.each((index, el) => {
 			let link = $(el).find("td a");
 			let href = options.baseUrl + link.attr("href");
-			let text = link.text().trim();
+			let text = link.text().match(regExp).join(" ");
 			response.push(createManga(text, href));
 		})
 		return response;

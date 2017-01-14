@@ -5,7 +5,7 @@ const subscribers = require("../libs/subscribers");
 const generateMangaResponse = require("../libs/generateMangaResponse");
 
 module.exports = function() {
-	const job = new CronJob("03 11 8-23 * * *", () => {
+	const job = new CronJob("03 03,13,23,33,43,53 * * * *", () => {
 		const site = "http://readmanga.me";
 		MangaAPI.getAllManga(site)
 			.then(data => _.each(data, item => {

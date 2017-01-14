@@ -25,7 +25,21 @@ function getUnionData( previous, next ) {
 }
 
 function normilizeData( data ) {
-	return data.sortBy(item => item.text).toArray().map(item => item.toJS());
+	return sortByUrl(data.toArray().map(item => item.toJS()));
+}
+
+function sortByUrl( data ) {
+	data.sort((previous, next) => {
+		if(previous.url > next.url) {
+			return -1
+		}else if(previous.url < next.url){
+			return 1
+		}else{
+			return 0
+		}	
+	})
+
+	return data;
 }
 
 module.exports = function(previous, next) {
