@@ -40,6 +40,9 @@ module.exports = function( msg ) {
 		case "/unsub_random_manga": case "\u{1F198}Отписаться от рассылки случайной манги":
 			actions.subscribeActions.unsubscribe.call(this, Object.assign({}, msg, { action: "randomManga" }))
 		break;
+		case "/sub_list": case "\u{1F4D6}Список подписок":
+			actions.subscribeActions.getUserSubscribeList.call(this, msg);
+		break;
 		case "/hide_menu":
 			actions.switchKeyboard.call(this, msg, "close");
 		break;

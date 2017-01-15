@@ -25,7 +25,7 @@ function scrapNewMangaFromReadManga(count = 10, mangaName = false){
 		options.chapters = "table.table.table-hover > tr";
 	}
 	return scrapManga(options.url, ( $ ) => {
-		const regExp = /([А-яA-z0-9\-]+)/g;
+		const regExp = /([А-яA-z0-9\-\ё\:]+)/g;
 		const response = [];
 		const chapters = $(options.chapters).slice(0, count);
 		chapters.each((index, el) => {

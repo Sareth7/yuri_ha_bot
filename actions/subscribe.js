@@ -39,3 +39,16 @@ module.exports.unsubscribe = function( msg ) {
 			this.bot.sendMessage(chatId, text, options);
 		})
 }
+
+module.exports.getUserSubscribeList = function( msg ) {
+	const { chat: { id: chatId, first_name } } = msg;
+	const keyboard = buttons.getKeyBoard("unsub");
+	subscribers.getSubscribes(chatId)
+		.then(data => {
+			const title = "Твои подписки!";
+			const text = "Нажмите \u{1F515}Отписка, чтобы не получать оповещение о новых главах";
+			const options = buttons.getInlineKeyBoardFromArrayOfButtons(data);
+			this.bot.sendMessage(chatId, title, options);
+			this.bot.sendMessage(chatId, text, keyboard);
+		})
+}

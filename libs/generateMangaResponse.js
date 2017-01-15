@@ -17,7 +17,10 @@ module.exports.getNewMangaListResponse = function( data, site, mangaName = "" ) 
 
 module.exports.getRandomMangaResponse = function( manga, site = "readmanga.me") {
 	const { name, alternativeName, desc, url, img } = manga;
-	const linkButton = buttons.getInlineKeyBoard({ text: "Читать", url });
+	const linkButton = buttons.getInlineKeyBoard(
+		{ text: "\u{1F4C6}Подписаться", callback_data: `sub;${url}` },
+		{ text: "\u{1F4DC}Читать", url }
+	);
 	const messageTitle = `<strong>${ manga.name }</strong>\n<em>${ manga.alternativeName }</em>`;
 	const messageBody = `<pre>${ manga.desc }</pre>`;
 	const message = `${messageTitle}\n${messageBody}`;

@@ -1,5 +1,6 @@
 const Subscribe = require("../models/Subscribe");
 const Chapter = require("../models/Chapter");
+const _ = require("lodash");
 
 module.exports.checkUserSub = function( action, user, isSub = false ) {
 	let promise = new Promise((resolve, reject) => {
@@ -62,4 +63,33 @@ module.exports.unsubscribeToAction = function( action, user ) {
 		)
 
 	return promise;
+}
+
+module.exports.getSubscribes = function( user ){
+	return new Promise((resolve, reject) => {
+		Subscribe
+			.find({
+				action: {$nin : ["newManga", "randomManga"]}, 
+				users: {$in : [user]} 
+			})
+			.select("action -_id")
+			.then(data => {
+				resolve(convertSubscribesData(data))
+			})
+	})
+}
+
+function convertSubscribesData(subscribes) {
+	subscribes = _.map(subscribes, sub => {
+		const { action: text } = sub;
+		const site = "http://readmanga.me/"; 
+		const url = `${site}${text}`;
+		const callback_data = `unsub;${text}`;
+		return [
+			{text, callback_data: text },
+			{text: "\u{1F515}Отписка", callback_data}
+		]
+	})
+
+	return subscribes;
 }
